@@ -46,7 +46,7 @@ def input_int_with_exit(text, required=True):
             return result
 
 
-def input_str(text, required=True):
+def input_str(text="", required=True):
     while True:
         result = input(text).strip()
         if result:
