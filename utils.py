@@ -1,5 +1,6 @@
 from pyfiglet import Figlet
-from colorama import Fore, Back, Style
+from colorama import init, Fore, Back, Style
+init()
 
 
 def title(text):
@@ -7,12 +8,19 @@ def title(text):
     return result.renderText(text)
 
 
-def input_int(text):
+def input_int(text, required=False):
     while True:
         try:
-            result = int(input(text))
+            result = input(text).strip()
+            if result == "":
+                if required is False:
+                    return None
+                else:
+                    print(Fore.RED + "Error! O campo não pode ser branco. Tente novamente." + Style.RESET_ALL)
+            else:
+                result = int(result)
         except ValueError:
-            print("Erro! O valor informado não é um número. Tente novamente.")
+            print(Fore.RED + "Erro! O valor informado não é um número. Tente novamente." + Style.RESET_ALL)
         else:
             return result
 
@@ -36,4 +44,4 @@ def input_str(text, required=True):
             return result
         elif result == "" and required is False:
             return None
-        print("Error! O campo não pode ser branco. Tente novamente.")
+        print(Fore.RED + "Error! O campo não pode ser branco. Tente novamente." + Style.RESET_ALL)

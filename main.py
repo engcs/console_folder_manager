@@ -2,8 +2,9 @@ import os
 import sys
 from utils import *
 
+
 def menu():
-    os.system('CLS')
+
     menu_str = """
     1 : LISTAR DIRETÓRIOS [CLT]
     2 : CRIAR NOVA PASTA [CLT]
@@ -13,6 +14,7 @@ def menu():
     """
 
     while True:
+        os.system('CLS')
         print(title("MEU GESTOR"))
         print("Escolha uma opção numérica ou digite 'exit' para sair:\n")
         print(menu_str)
@@ -31,11 +33,11 @@ def menu():
             os.system('PAUSE')
         elif choice == 0 or choice == 'exit':
             exit()
-        os.system('CLS')
 
 
 def main():
-    menu()
+    # menu()
+    input_int("Teste: ", required=True)
     os.system('PAUSE')
 
 
