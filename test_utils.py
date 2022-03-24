@@ -8,7 +8,17 @@ from utils import *
 
 
 class MyTestCase(unittest.TestCase):
-    def test_input_str(self):
+
+    def test_input_str_123(self):
+        with patch("builtins.input", return_value='123'):
+            self.assertEqual(input_str(), '123')
+
+    def test_input_str_abc(self):
+        with patch("builtins.input", return_value='abc'):
+            self.assertEqual(input_str(), 'abc')
+
+    def test_input_str_blank(self):
+        # Entra primeiro com vazio e depois com um dado válido para sair do loop
         with patch("builtins.input", side_effect=["", "teste"]), patch("sys.stdout", new=StringIO()) as fake_out:
             input_str()
             self.assertEqual(fake_out.getvalue().strip(), Fore.RED + "Error! O campo não pode ser branco. Tente novamente." + Style.RESET_ALL)
