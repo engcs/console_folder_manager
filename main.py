@@ -56,7 +56,8 @@ def edit_details():
 
 
 def main():
-    menu()
+    # menu()
+    print("TESTE")
     os.system('PAUSE')
 
 
