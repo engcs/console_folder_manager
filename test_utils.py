@@ -9,29 +9,35 @@ from utils import *
 
 class MyTestCase(unittest.TestCase):
 
+    # required=True
     @patch(target="builtins.input", new=MagicMock(return_value='123'))
-    def test_input_str_123(self):
-        self.assertEqual(first=input_str(), second='123')
-
-    # Context manager version
-    # def test_input_str_123(self):
-    #     with patch("builtins.input", return_value='123'):
-    #         self.assertEqual(input_str(), '123')
+    def test_input_str_123_required_True(self):
+        self.assertEqual(first=input_str(required=True), second='123')
 
     @patch(target="builtins.input", new=MagicMock(return_value='abc'))
-    def test_input_str_abc(self):
-        self.assertEqual(first=input_str(), second='abc')
+    def test_input_str_abc_required_True(self):
+        self.assertEqual(first=input_str(required=True), second='abc')
 
-    # Context manager version
-    # def test_input_str_abc(self):
-    #     with patch("builtins.input", return_value='abc'):
-    #         self.assertEqual(input_str(), 'abc')
-
-    def test_input_str_blank(self):
+    def test_input_str_blank_required_True(self):
         # Entra primeiro com vazio e depois com um dado válido para sair do loop
         with patch("builtins.input", side_effect=["", "teste"]), patch("sys.stdout", new=StringIO()) as fake_out:
-            input_str()
+            input_str(required=True)
             self.assertEqual(fake_out.getvalue().strip(), Fore.RED + "Error! O campo não pode ser branco. Tente novamente." + Style.RESET_ALL)
+
+    # required=False
+    @patch(target="builtins.input", new=MagicMock(return_value='123'))
+    def test_input_str_123_required_False(self):
+        self.assertEqual(first=input_str(required=False), second='123')
+
+    @patch(target="builtins.input", new=MagicMock(return_value='abc'))
+    def test_input_str_abc_required_False(self):
+        self.assertEqual(first=input_str(required=False), second='abc')
+
+    def test_input_str_blank_required_False(self):
+        # Entra primeiro com vazio e depois com um dado válido para sair do loop
+        with patch("builtins.input", side_effect=["", "teste"]), patch("sys.stdout", new=StringIO()) as fake_out:
+            input_str(required=False)
+            self.assertEqual(fake_out.getvalue().strip(), "")
 
 
 if __name__ == "__main__":
