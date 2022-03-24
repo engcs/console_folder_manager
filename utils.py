@@ -55,3 +55,6 @@ def input_str(text, required=True):
             return None
         print(Fore.RED + "Error! O campo não pode ser branco. Tente novamente." + Style.RESET_ALL)
 
+def meu_teste(param):
+    resposta = input(param)
+    print(resposta)
