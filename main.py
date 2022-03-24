@@ -36,7 +36,8 @@ def menu():
 
 
 def main():
-    menu()
+    # menu()
+    input_int("Teste: ", required=True)
     os.system('PAUSE')
 
 
