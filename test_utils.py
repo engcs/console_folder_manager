@@ -9,13 +9,23 @@ from utils import *
 
 class MyTestCase(unittest.TestCase):
 
+    @patch(target="builtins.input", new=MagicMock(return_value='123'))
     def test_input_str_123(self):
-        with patch("builtins.input", return_value='123'):
-            self.assertEqual(input_str(), '123')
+        self.assertEqual(first=input_str(), second='123')
 
+    # Context manager version
+    # def test_input_str_123(self):
+    #     with patch("builtins.input", return_value='123'):
+    #         self.assertEqual(input_str(), '123')
+
+    @patch(target="builtins.input", new=MagicMock(return_value='abc'))
     def test_input_str_abc(self):
-        with patch("builtins.input", return_value='abc'):
-            self.assertEqual(input_str(), 'abc')
+        self.assertEqual(first=input_str(), second='abc')
+
+    # Context manager version
+    # def test_input_str_abc(self):
+    #     with patch("builtins.input", return_value='abc'):
+    #         self.assertEqual(input_str(), 'abc')
 
     def test_input_str_blank(self):
         # Entra primeiro com vazio e depois com um dado válido para sair do loop
