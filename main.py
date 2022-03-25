@@ -1,5 +1,6 @@
 import os
 import sys
+import shutil
 from utils import *
 
 
@@ -10,6 +11,7 @@ def menu():
     2 : CRIAR NOVA PASTA [CLT]
     3 : VISUALIZAR DETALHES
     4 : EDITAR DETALHES
+    5 : DELETAR PASTA [CLT]
     0 : SAIR
     """
 
@@ -27,6 +29,8 @@ def menu():
             view_details()
         elif choice == 4:                   # EDITAR DETALHES
             edit_details()
+        elif choice == 5:                   # DELETAR PASTA [CLT]
+            delete_dir()
         elif choice == 0 or choice is 'exit': # SAIR
             exit()
 
@@ -49,11 +53,18 @@ def create_dir():
         last_dir = dirs[-1]
     id_last_dir = int(last_dir[-4:])
     next_id_dir = id_last_dir + 1
-    choice = input_int_with_exit(f"Número da nova pasta [{next_id_dir:04d}]: ", required=False)
-    if choice is None:
-        print("Vazio")
-    elif choice == 'exit':  # SAIR
-        return
+    while True:
+        raw = input_int_with_exit(f"Número da nova pasta ou 'exit' para sair [{next_id_dir:04d}]: ", required=False)
+        if raw == 'exit':  # SAIR
+            return
+        elif raw is None:
+            new_id_dir = next_id_dir
+        else:
+            new_id_dir = raw
+        new_dir_name = f"CLT{new_id_dir:04d}"
+        if make_dir(new_dir_name):
+            print(f"A pasta {new_dir_name} foi criada com sucesso!")
+            break
     os.system('PAUSE')
 
 
@@ -63,6 +74,31 @@ def view_details():
 
 def edit_details():
     pass
+
+
+def delete_dir():
+    while True:
+        raw = input_int_with_exit(f"Número da pasta a ser removida ou 'exit' para sair: ", required=True)
+        if raw == 'exit':  # SAIR
+            return
+        else:
+            id_dir = raw
+            dir_name = f"CLT{id_dir:04d}"
+            if dir_name in get_dirs():
+                print(f"Tem certeza que deseja remover a pasta {dir_name}?")
+                raw = input_str_with_exit(Fore.YELLOW + "Digite o nome completo da pasta para confirmar ou 'exit' para sair: " + Style.RESET_ALL)
+                if raw == "exit":
+                    return
+                elif raw.upper() == dir_name.upper():
+                    path = os.path.join(os.getcwd(), dir_name)
+                    shutil.rmtree(path)
+                    print(f"A pasta {dir_name} foi removida com sucesso!")
+                else:
+                    print(Fore.RED + "O nome está incorreto! Operação cancelada." + Style.RESET_ALL)
+                break
+            else:
+                print(f"Não existe pasta com esse número!")
+    os.system('PAUSE')
 
 
 def main():

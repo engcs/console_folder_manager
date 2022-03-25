@@ -91,3 +91,14 @@ def get_dirs():
         return clt_dir
     else:
         return None
+
+
+def make_dir(path):
+    try:
+        os.mkdir(path)
+        return path
+    except FileExistsError as e:
+        if e.winerror == 183:
+            print(Fore.RED + f"A pasta {e.filename} já existe!" + Style.RESET_ALL)
+        else:
+            print(f"{type(e).__name__, e.__str__()}")
