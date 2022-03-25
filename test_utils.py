@@ -52,7 +52,7 @@ class TestInputStrWithExit(unittest.TestCase):
 
     @patch(target="builtins.input", new=MagicMock(return_value='exit'))
     def test_input_str_exit_required_True(self):
-        self.assertEqual(first=input_str_with_exit(required=True), second=None)
+        self.assertEqual(first=input_str_with_exit(required=True), second='exit')
 
     def test_input_str_blank_required_True(self):
         # Entra primeiro com vazio e depois com um dado válido para sair do loop
@@ -136,7 +136,7 @@ class TestInputIntWithExit(unittest.TestCase):
 
     @patch(target="builtins.input", new=MagicMock(return_value='exit'))
     def test_input_int_exit_required_True(self):
-        self.assertEqual(first=input_int_with_exit(required=True), second=None)
+        self.assertEqual(first=input_int_with_exit(required=True), second='exit')
 
     # required=False
     @patch(target="builtins.input", new=MagicMock(return_value='123'))

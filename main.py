@@ -20,31 +20,41 @@ def menu():
         print(menu_str)
         choice = input_int_with_exit("Entre com sua escolha: ")
         if choice == 1:                     # LISTAR DIRETÓRIOS [CLT]
-            print(f"Opção {choice}")
             list_dirs()
-            os.system('PAUSE')
         elif choice == 2:                   # CRIAR NOVA PASTA [CLT]
-            print(f"Opção {choice}")
             create_dir()
-            os.system('PAUSE')
         elif choice == 3:                   # VISUALIZAR DETALHES
-            print(f"Opção {choice}")
             view_details()
-            os.system('PAUSE')
         elif choice == 4:                   # EDITAR DETALHES
-            print(f"Opção {choice}")
             edit_details()
-            os.system('PAUSE')
-        elif choice == 0 or choice == 'exit': # SAIR
+        elif choice == 0 or choice is 'exit': # SAIR
             exit()
 
 
 def list_dirs():
-    pass
+    print("\n### LISTAR DIRETÓRIOS [CLT] ###")
+    dirs = get_dirs()
+    if dirs is None:
+        print(Fore.RED + "Não há nenhum diretório aqui!" + Style.RESET_ALL)
+    else:
+        print(dirs)
+    os.system('PAUSE')
 
 
 def create_dir():
-    pass
+    dirs = get_dirs()
+    if dirs is None:
+        last_dir = "CLT0000"
+    else:
+        last_dir = dirs[-1]
+    id_last_dir = int(last_dir[-4:])
+    next_id_dir = id_last_dir + 1
+    choice = input_int_with_exit(f"Número da nova pasta [{next_id_dir:04d}]: ", required=False)
+    if choice is None:
+        print("Vazio")
+    elif choice == 'exit':  # SAIR
+        return
+    os.system('PAUSE')
 
 
 def view_details():
@@ -56,8 +66,7 @@ def edit_details():
 
 
 def main():
-    # menu()
-    print("TESTE")
+    menu()
     os.system('PAUSE')
 
 

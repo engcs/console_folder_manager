@@ -1,3 +1,4 @@
+import os
 from pyfiglet import Figlet
 from colorama import init, Fore, Back, Style
 init()
@@ -36,7 +37,7 @@ def input_int_with_exit(text="", required=True):
                 else:
                     raise TypeError("Error. The field is required.")
             elif result == "exit":
-                return None
+                return result
             result = int(result)
         except TypeError:
             print(Fore.RED + "Error! O campo não pode ser branco. Tente novamente." + Style.RESET_ALL)
@@ -71,8 +72,22 @@ def input_str_with_exit(text="", required=True):
                 else:
                     raise TypeError("Error. The field is required.")
             elif result == "exit":
-                return None
+                return result
         except TypeError:
             print(Fore.RED + "Error! O campo não pode ser branco. Tente novamente." + Style.RESET_ALL)
         else:
             return result
+
+
+def get_dirs():
+    START = "CLT"
+    clt_dir = []
+    for dir in os.listdir():
+        if os.path.isdir(dir):
+            if dir.startswith(START):
+                clt_dir.append(dir)
+    if clt_dir:
+        clt_dir.sort()
+        return clt_dir
+    else:
+        return None
