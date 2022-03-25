@@ -8,7 +8,7 @@ def title(text):
     return result.renderText(text)
 
 
-def input_int(text, required=False):
+def input_int(text="", required=True):
     while True:
         try:
             result = input(text).strip()
@@ -16,18 +16,17 @@ def input_int(text, required=False):
                 if required is False:
                     return None
                 else:
-                    raise TypeError("Sorry, no numbers below zero")
-            else:
-                result = int(result)
-        except ValueError:
-            print(Fore.RED + "Erro! O valor informado não é um número. Tente novamente." + Style.RESET_ALL)
+                    raise TypeError("Error. The field is required.")
+            result = int(result)
         except TypeError:
             print(Fore.RED + "Error! O campo não pode ser branco. Tente novamente." + Style.RESET_ALL)
+        except ValueError:
+            print(Fore.RED + "Error! O valor informado não é um número. Tente novamente." + Style.RESET_ALL)
         else:
             return result
 
 
-def input_int_with_exit(text, required=True):
+def input_int_with_exit(text="", required=True):
     while True:
         try:
             result = input(text).strip()
@@ -35,26 +34,45 @@ def input_int_with_exit(text, required=True):
                 if required is False:
                     return None
                 else:
-                    raise TypeError("Sorry, no numbers below zero")
-            elif result != "exit":
-                result = int(result)
-        except ValueError:
-            print(Fore.RED + "Erro! O valor informado não é um número. Tente novamente." + Style.RESET_ALL)
+                    raise TypeError("Error. The field is required.")
+            elif result == "exit":
+                return None
+            result = int(result)
         except TypeError:
             print(Fore.RED + "Error! O campo não pode ser branco. Tente novamente." + Style.RESET_ALL)
+        except ValueError:
+            print(Fore.RED + "Error! O valor informado não é um número. Tente novamente." + Style.RESET_ALL)
         else:
             return result
 
 
 def input_str(text="", required=True):
     while True:
-        result = input(text).strip()
-        if result:
+        try:
+            result = input(text).strip()
+            if result == "":
+                if required is False:
+                    return None
+                else:
+                    raise TypeError("Error. The field is required.")
+        except TypeError:
+            print(Fore.RED + "Error! O campo não pode ser branco. Tente novamente." + Style.RESET_ALL)
+        else:
             return result
-        elif result == "" and required is False:
-            return None
-        print(Fore.RED + "Error! O campo não pode ser branco. Tente novamente." + Style.RESET_ALL)
 
-def meu_teste(param):
-    resposta = input(param)
-    print(resposta)
+
+def input_str_with_exit(text="", required=True):
+    while True:
+        try:
+            result = input(text).strip()
+            if result == "":
+                if required is False:
+                    return None
+                else:
+                    raise TypeError("Error. The field is required.")
+            elif result == "exit":
+                return None
+        except TypeError:
+            print(Fore.RED + "Error! O campo não pode ser branco. Tente novamente." + Style.RESET_ALL)
+        else:
+            return result
