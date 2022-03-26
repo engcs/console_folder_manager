@@ -12,15 +12,15 @@ def menu():
     3 : VISUALIZAR DETALHES
     4 : EDITAR DETALHES
     5 : DELETAR PASTA [CLT]
-    0 : SAIR
-    """
+    0 : SAIR"""
+
+    os.system('CLS')
+    print(title("MEU GESTOR"))
 
     while True:
-        os.system('CLS')
-        print(title("MEU GESTOR"))
-        print("Escolha uma opção numérica ou digite 'exit' para sair:\n")
+        print("\nEscolha uma opção numérica ou digite 'exit' para sair:")
         print(menu_str)
-        choice = input_int_with_exit("Entre com sua escolha: ")
+        choice = input_int_with_exit("\nEntre com sua escolha: ")
         if choice == 1:                     # LISTAR DIRETÓRIOS [CLT]
             list_dirs()
         elif choice == 2:                   # CRIAR NOVA PASTA [CLT]
@@ -36,16 +36,18 @@ def menu():
 
 
 def list_dirs():
-    print("\n### LISTAR DIRETÓRIOS [CLT] ###")
+    print("\n################# LISTAR DIRETÓRIOS [CLT] #################\n")
     dirs = get_dirs()
     if dirs is None:
         print(Fore.RED + "Não há nenhum diretório aqui!" + Style.RESET_ALL)
     else:
         print(dirs)
+    print()
     os.system('PAUSE')
 
 
 def create_dir():
+    print("\n################# CRIAR DIRETÓRIO [CLT] #################\n")
     dirs = get_dirs()
     if dirs is None:
         last_dir = "CLT0000"
@@ -65,6 +67,7 @@ def create_dir():
         if make_dir(new_dir_name):
             print(f"A pasta {new_dir_name} foi criada com sucesso!")
             break
+    print()
     os.system('PAUSE')
 
 
@@ -77,6 +80,7 @@ def edit_details():
 
 
 def delete_dir():
+    print("\n################# DELETAR DIRETÓRIO [CLT] ##################\n")
     while True:
         raw = input_int_with_exit(f"Número da pasta a ser removida ou 'exit' para sair: ", required=True)
         if raw == 'exit':  # SAIR
@@ -97,6 +101,7 @@ def delete_dir():
                 break
             else:
                 print(f"Não existe pasta com esse número!")
+    print()
     os.system('PAUSE')
 
 
