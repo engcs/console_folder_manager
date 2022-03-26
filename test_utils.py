@@ -1,6 +1,6 @@
 # https://stackoverflow.com/questions/21046717/python-mocking-raw-input-in-unittests
 # https://andressa.dev/2019-07-20-using-pach-to-test-inputs/
-
+import os.path
 import unittest
 from io import StringIO
 from unittest.mock import patch, MagicMock
@@ -153,6 +153,34 @@ class TestInputIntWithExit(unittest.TestCase):
     @patch(target="builtins.input", new=MagicMock(return_value=''))
     def test_input_int_blank_required_False(self):
         self.assertEqual(first=input_int_with_exit(required=False), second=None)
+
+
+class TestCreateAndDeleteDirs(unittest.TestCase):
+
+    temp_folder_name = "TEST_FOLDER"
+    temp_file_name = "testfile.txt"
+    temp_file_path = os.path.join(temp_folder_name, "testfile.txt")
+
+    def setUp(self):
+        if os.path.isdir(self.temp_folder_name):
+            shutil.rmtree(self.temp_folder_name)
+
+    def test_create_and_delete_empty_folder(self):
+        self.assertFalse(os.path.isdir(self.temp_folder_name), "Inital fail, folder already exists.")
+        make_dir(self.temp_folder_name)
+        self.assertTrue(os.path.isdir(self.temp_folder_name), "Failed to create the folder.")
+        rm_dir(self.temp_folder_name)
+        self.assertFalse(os.path.isdir(self.temp_folder_name), "Failed to remove the empty folder.")
+
+    def test_create_and_delete_filed_folder(self):
+        self.assertFalse(os.path.isdir(self.temp_folder_name), "Inital fail, folder already exists.")
+        make_dir(self.temp_folder_name)
+        self.assertTrue(os.path.isdir(self.temp_folder_name), "Failed to create the folder.")
+        with open(self.temp_file_path, "w") as f:
+            f.write("Delete me!")
+        self.assertTrue(os.path.isfile(self.temp_file_path), "Failed to create the file.")
+        rm_dir(self.temp_folder_name)
+        self.assertFalse(os.path.isdir(self.temp_folder_name), "Failed to remove the filed folder.")
 
 
 if __name__ == "__main__":

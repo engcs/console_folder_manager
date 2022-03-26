@@ -1,4 +1,5 @@
 import os
+import shutil
 from pyfiglet import Figlet
 from colorama import init, Fore, Back, Style
 init()
@@ -102,3 +103,10 @@ def make_dir(path):
             print(Fore.RED + f"A pasta {e.filename} já existe!" + Style.RESET_ALL)
         else:
             print(f"{type(e).__name__, e.__str__()}")
+
+
+def rm_dir(path):
+    abs_path = os.path.join(os.getcwd(), path)
+    shutil.rmtree(abs_path)
+
+

@@ -90,8 +90,7 @@ def delete_dir():
                 if raw == "exit":
                     return
                 elif raw.upper() == dir_name.upper():
-                    path = os.path.join(os.getcwd(), dir_name)
-                    shutil.rmtree(path)
+                    rm_dir(dir_name)
                     print(f"A pasta {dir_name} foi removida com sucesso!")
                 else:
                     print(Fore.RED + "O nome está incorreto! Operação cancelada." + Style.RESET_ALL)
