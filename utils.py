@@ -48,36 +48,45 @@ def input_int_with_exit(text="", required=True):
             return result
 
 
-def input_str(text="", required=True):
+def input_str(text="", required=True, allowed=[], escape=[]):
     while True:
         try:
             result = input(text).strip()
             if result == "":
-                if required is False:
+                if not required:
                     return None
                 else:
                     raise TypeError("Error. The field is required.")
+            if escape:
+                if result in escape:
+                    return result
+            if allowed:
+                if result not in allowed:
+                    raise ValueError("Error. The value is not allowed.")
         except TypeError:
             print(Fore.RED + "Error! O campo não pode ser branco. Tente novamente." + Style.RESET_ALL)
+        except ValueError:
+            print(Fore.RED + "Error! A entrada não é válida. Tente novamente." + Style.RESET_ALL)
         else:
             return result
 
 
-def input_str_with_exit(text="", required=True):
-    while True:
-        try:
-            result = input(text).strip()
-            if result == "":
-                if required is False:
-                    return None
-                else:
-                    raise TypeError("Error. The field is required.")
-            elif result == "exit":
-                return result
-        except TypeError:
-            print(Fore.RED + "Error! O campo não pode ser branco. Tente novamente." + Style.RESET_ALL)
-        else:
-            return result
+
+# def input_str_with_exit(text="", required=True):
+#     while True:
+#         try:
+#             result = input(text).strip()
+#             if result == "":
+#                 if required is False:
+#                     return None
+#                 else:
+#                     raise TypeError("Error. The field is required.")
+#             elif result == "exit":
+#                 return result
+#         except TypeError:
+#             print(Fore.RED + "Error! O campo não pode ser branco. Tente novamente." + Style.RESET_ALL)
+#         else:
+#             return result
 
 
 def get_dirs():

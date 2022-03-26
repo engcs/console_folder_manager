@@ -72,11 +72,33 @@ def create_dir():
 
 
 def view_details():
-    pass
+    print(input_str("Teste: ", required=True, allowed=['s', 'y'], escape='exit'))
+    os.system('PAUSE')
 
 
 def edit_details():
-    pass
+    print("\n#################  EDITAR DETALHES [CLT]  ##################\n")
+    while True:
+        raw = input_int_with_exit(f"Número da pasta a ser editada ou 'exit' para sair: ", required=True)
+        if raw == 'exit':  # SAIR
+            return
+        else:
+            id_dir = raw
+            dir_name = f"CLT{id_dir:04d}"
+            if dir_name in get_dirs():
+                yaml_path = os.path.join(dir_name, 'details.yaml')
+                have_details = os.path.isfile(yaml_path)
+                if have_details:
+                    print("POSSUI DETALHES")
+                else:
+                    print("NÃO POSSUI DETALHES")
+                    yes_or_no = input_str(f"Deseja criar o arquivo 'details.yaml' (s/n)? ", required=True)
+                    if yes_or_no == 's':
+                        print("cria arquivo")
+                        with open(yaml_path, "w") as file:
+                            file.write("Delete me!")
+                    else:
+                        return
 
 
 def delete_dir():

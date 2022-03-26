@@ -9,7 +9,8 @@ from utils import *
 
 class TestInputStr(unittest.TestCase):
 
-    # required=True
+    """ Test if input_str works with required=True """
+
     @patch(target="builtins.input", new=MagicMock(return_value='123'))
     def test_input_str_123_required_True(self):
         self.assertEqual(first=input_str(required=True), second='123')
@@ -25,7 +26,8 @@ class TestInputStr(unittest.TestCase):
             self.assertEqual(fake_out.getvalue().strip(),
                              Fore.RED + "Error! O campo não pode ser branco. Tente novamente." + Style.RESET_ALL)
 
-    # required=False
+    """ Test if input_str works with required=False """
+
     @patch(target="builtins.input", new=MagicMock(return_value='123'))
     def test_input_str_123_required_False(self):
         self.assertEqual(first=input_str(required=False), second='123')
@@ -38,41 +40,40 @@ class TestInputStr(unittest.TestCase):
     def test_input_str_blank_required_False(self):
         self.assertEqual(first=input_str(required=False), second=None)
 
+    """ Test if input_str works with required=True and escape=['exit'] """
 
-class TestInputStrWithExit(unittest.TestCase):
-
-    # required=True
     @patch(target="builtins.input", new=MagicMock(return_value='123'))
-    def test_input_str_123_required_True(self):
-        self.assertEqual(first=input_str_with_exit(required=True), second='123')
+    def test_input_str_123_required_True_escape_exit(self):
+        self.assertEqual(first=input_str(required=True, escape=['exit']), second='123')
 
     @patch(target="builtins.input", new=MagicMock(return_value='abc'))
-    def test_input_str_abc_required_True(self):
-        self.assertEqual(first=input_str_with_exit(required=True), second='abc')
+    def test_input_str_abc_required_True_escape_exit(self):
+        self.assertEqual(first=input_str(required=True, escape=['exit']), second='abc')
 
     @patch(target="builtins.input", new=MagicMock(return_value='exit'))
-    def test_input_str_exit_required_True(self):
-        self.assertEqual(first=input_str_with_exit(required=True), second='exit')
+    def test_input_str_exit_required_True_escape_exit(self):
+        self.assertEqual(first=input_str(required=True, escape=['exit']), second='exit')
 
-    def test_input_str_blank_required_True(self):
+    def test_input_str_blank_required_True_escape_exit(self):
         # Entra primeiro com vazio e depois com um dado válido para sair do loop
         with patch("builtins.input", side_effect=['', 'teste']), patch("sys.stdout", new=StringIO()) as fake_out:
-            input_str_with_exit(required=True)
+            input_str(required=True, escape=['exit'])
             self.assertEqual(fake_out.getvalue().strip(),
                              Fore.RED + "Error! O campo não pode ser branco. Tente novamente." + Style.RESET_ALL)
 
-    # required=False
+    """ Test if input_str works with required=False and escape=['exit'] """
+
     @patch(target="builtins.input", new=MagicMock(return_value='123'))
-    def test_input_str_123_required_False(self):
-        self.assertEqual(first=input_str_with_exit(required=False), second='123')
+    def test_input_str_123_required_False_escape_exit(self):
+        self.assertEqual(first=input_str(required=False, escape=['exit']), second='123')
 
     @patch(target="builtins.input", new=MagicMock(return_value='abc'))
-    def test_input_str_abc_required_False(self):
-        self.assertEqual(first=input_str_with_exit(required=False), second='abc')
+    def test_input_str_abc_required_False_escape_exit(self):
+        self.assertEqual(first=input_str(required=False, escape=['exit']), second='abc')
 
     @patch(target="builtins.input", new=MagicMock(return_value=''))
-    def test_input_str_blank_required_False(self):
-        self.assertEqual(first=input_str_with_exit(required=False), second=None)
+    def test_input_str_blank_required_False_escape_exit(self):
+        self.assertEqual(first=input_str(required=False, escape=['exit']), second=None)
 
 
 class TestInputInt(unittest.TestCase):
