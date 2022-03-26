@@ -81,6 +81,15 @@ def edit_details():
 
 def delete_dir():
     print("\n################# DELETAR DIRETÓRIO [CLT] ##################\n")
+    yes_or_no = input_str(f"Deseja exibir os diretórios existentes (s/n)? ", required=True)
+    if yes_or_no == 's':
+        dirs = get_dirs()
+        if dirs is None:
+            print(Fore.RED + "Não há nenhum diretório aqui!" + Style.RESET_ALL)
+        else:
+            print(dirs)
+        print()
+
     while True:
         raw = input_int_with_exit(f"Número da pasta a ser removida ou 'exit' para sair: ", required=True)
         if raw == 'exit':  # SAIR
