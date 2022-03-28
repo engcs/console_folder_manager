@@ -9,41 +9,35 @@ def title(text):
     result = Figlet()
     return result.renderText(text)
 
+def error(msg):
+    return Fore.RED + "[Error] " + Style.RESET_ALL + msg
 
-def input_int(text="", required=True):
+
+def input_int(text="", required=True, allowed=[], escape=[]):
+
+    if allowed:
+        for item in allowed:
+            try:
+                int(str(item))
+            except ValueError:
+                raise ValueError("Error! Allowed values must be integers.")
+
     while True:
         try:
-            result = input(text).strip()
-            if result == "":
-                if required is False:
-                    return None
-                else:
-                    raise TypeError("Error. The field is required.")
-            result = int(result)
-        except TypeError:
-            print(Fore.RED + "Error! O campo não pode ser branco. Tente novamente." + Style.RESET_ALL)
+            raw = input(text).strip()
+            if raw == "" and required:
+                print(error("O campo é obrigatório."))
+                continue
+            if raw == "" and not required:
+                return None
+            if escape and raw in escape:
+                return raw
+            result = int(raw)
+            if allowed and result not in allowed:
+                print(error("Insira um valor válido."))
+                continue
         except ValueError:
-            print(Fore.RED + "Error! O valor informado não é um número. Tente novamente." + Style.RESET_ALL)
-        else:
-            return result
-
-
-def input_int_with_exit(text="", required=True):
-    while True:
-        try:
-            result = input(text).strip()
-            if result == "":
-                if required is False:
-                    return None
-                else:
-                    raise TypeError("Error. The field is required.")
-            elif result == "exit":
-                return result
-            result = int(result)
-        except TypeError:
-            print(Fore.RED + "Error! O campo não pode ser branco. Tente novamente." + Style.RESET_ALL)
-        except ValueError:
-            print(Fore.RED + "Error! O valor informado não é um número. Tente novamente." + Style.RESET_ALL)
+            print(error("O valor informado não é um número válido."))
         else:
             return result
 

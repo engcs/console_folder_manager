@@ -31,7 +31,7 @@ def menu():
             edit_details()
         elif choice == 5:                   # DELETAR PASTA [CLT]
             delete_dir()
-        elif choice == 0 or choice is 'exit': # SAIR
+        elif choice == 0 or choice == 'exit': # SAIR
             exit()
 
 
@@ -137,7 +137,8 @@ def delete_dir():
 
 
 def main():
-    menu()
+    # menu()
+    print(input_int("Insira um número: ", allowed=[1.5, 1.6, 1.7], escape=['exit']))
     os.system('PAUSE')
 
 
