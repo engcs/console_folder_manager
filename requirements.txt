@@ -1,4 +1,6 @@
 pyfiglet==0.8.post1
 PyYAML==6.0
 winregistry==1.1.1
-colorama
+colorama==0.4.4
+coverage==6.3.2
+
