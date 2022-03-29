@@ -1,13 +1,16 @@
 import os
 import shutil
+
+from colorama import Back, Fore, Style, init
 from pyfiglet import Figlet
-from colorama import init, Fore, Back, Style
+
 init()
 
 
 def title(text):
     result = Figlet()
     return result.renderText(text)
+
 
 def error(msg):
     return Fore.RED + "[Error] " + Style.RESET_ALL + msg
@@ -83,11 +86,11 @@ def input_str(text="", required=True, allowed=[], escape=[]):
 #             return result
 
 
-def get_dirs():
+def get_dirs(path):
     START = "CLT"
     clt_dir = []
-    for dir in os.listdir():
-        if os.path.isdir(dir):
+    for dir in os.listdir(path):
+        if os.path.isdir(os.path.join(path, dir)):
             if dir.startswith(START):
                 clt_dir.append(dir)
     if clt_dir:

@@ -3,7 +3,8 @@
 import os.path
 import unittest
 from io import StringIO
-from unittest.mock import patch, MagicMock, Mock
+from unittest.mock import MagicMock, Mock, patch
+
 from app.utils import *
 
 

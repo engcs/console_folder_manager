@@ -1,8 +1,8 @@
 import os
-import sys
-import shutil
+
 from utils import *
 
+DIR_APP = "app"
 
 def menu():
 
@@ -20,7 +20,7 @@ def menu():
     while True:
         print("\nEscolha uma opção numérica ou digite 'exit' para sair:")
         print(menu_str)
-        choice = input_int_with_exit("\nEntre com sua escolha: ")
+        choice = input_int("\nEntre com sua escolha: ", escape=['exit'])
         if choice == 1:                     # LISTAR DIRETÓRIOS [CLT]
             list_dirs()
         elif choice == 2:                   # CRIAR NOVA PASTA [CLT]
@@ -37,7 +37,7 @@ def menu():
 
 def list_dirs():
     print("\n################# LISTAR DIRETÓRIOS [CLT] #################\n")
-    dirs = get_dirs()
+    dirs = get_dirs(DIR_APP)
     if dirs is None:
         print(Fore.RED + "Não há nenhum diretório aqui!" + Style.RESET_ALL)
     else:
@@ -48,7 +48,7 @@ def list_dirs():
 
 def create_dir():
     print("\n################# CRIAR DIRETÓRIO [CLT] #################\n")
-    dirs = get_dirs()
+    dirs = get_dirs(DIR_APP)
     if dirs is None:
         last_dir = "CLT0000"
     else:
@@ -56,7 +56,7 @@ def create_dir():
     id_last_dir = int(last_dir[-4:])
     next_id_dir = id_last_dir + 1
     while True:
-        raw = input_int_with_exit(f"Número da nova pasta ou 'exit' para sair [{next_id_dir:04d}]: ", required=False)
+        raw = input_int(f"Número da nova pasta ou 'exit' para sair [{next_id_dir:04d}]: ", required=False, escape=['exit'])
         if raw == 'exit':  # SAIR
             return
         elif raw is None:
@@ -79,7 +79,7 @@ def view_details():
 def edit_details():
     print("\n#################  EDITAR DETALHES [CLT]  ##################\n")
     while True:
-        raw = input_int_with_exit(f"Número da pasta a ser editada ou 'exit' para sair: ", required=True)
+        raw = input_int(f"Número da pasta a ser editada ou 'exit' para sair: ", required=True, escape=['exit'])
         if raw == 'exit':  # SAIR
             return
         else:
@@ -113,7 +113,7 @@ def delete_dir():
         print()
 
     while True:
-        raw = input_int_with_exit(f"Número da pasta a ser removida ou 'exit' para sair: ", required=True)
+        raw = input_int(f"Número da pasta a ser removida ou 'exit' para sair: ", required=True, escape=['exit'])
         if raw == 'exit':  # SAIR
             return
         else:
@@ -121,7 +121,7 @@ def delete_dir():
             dir_name = f"CLT{id_dir:04d}"
             if dir_name in get_dirs():
                 print(f"Tem certeza que deseja remover a pasta {dir_name}?")
-                raw = input_str_with_exit(Fore.YELLOW + "Digite o nome completo da pasta para confirmar ou 'exit' para sair: " + Style.RESET_ALL)
+                raw = input_str(Fore.YELLOW + "Digite o nome completo da pasta para confirmar ou 'exit' para sair: " + Style.RESET_ALL, escape=['exit'])
                 if raw == "exit":
                     return
                 elif raw.upper() == dir_name.upper():
@@ -137,8 +137,8 @@ def delete_dir():
 
 
 def main():
-    # menu()
-    print(input_int("Insira um número: ", allowed=[1.5, 1.6, 1.7], escape=['exit']))
+    menu()
+    # print(input_int("Insira um número: ", allowed=[1.5, 1.6, 1.7], escape=['exit']))
     os.system('PAUSE')
 
 
