@@ -1,9 +1,16 @@
 import os
+import yaml
 
 from utils import *
 
 APP_DIR = "app"
-
+DETAILS_TEMPLATE = {'nome': '', 'endereco': '', 'telefone': '', 'número': ''}
+# DETAILS_TEMPLATE = """
+# nome:
+# endereço:
+# telefone:
+# número:
+# """
 
 def menu():
     menu_str = """
@@ -58,13 +65,13 @@ def choice_2():
 # VISUALIZAR DETALHES
 def choice_3():
     print("\n###############  VISUALIZAR DETALHES [CLT]  ################\n")
-    os.system('PAUSE')
+    view_details(APP_DIR)
 
 
 # EDITAR DETALHES
 def choice_4():
     print("\n#################  EDITAR DETALHES [CLT]  ##################\n")
-    os.system('PAUSE')
+    edit_details()
 
 
 # DELETAR PASTA [CLT]
@@ -124,33 +131,85 @@ def create_dir():
             break
 
 
-def view_details():
-    print(input_str("Teste: ", required=True, allowed=['s', 'y'], escape='exit'))
-    os.system('PAUSE')
+def get_details(path, dir_name):
+    try:
+        file_name = "details.yaml"
+        fullpath = os.path.join(path, dir_name, file_name)
+
+        with open(file=fullpath, encoding='utf8') as file:
+            details = yaml.load(file, Loader=yaml.FullLoader)
+            return details
+    except FileNotFoundError as e:
+        print(error(f"Não existe um arquivo 'details.yaml'"
+                    f" na pasta '{fullpath}'."))
+        return
+    except PermissionError as e:
+        print(e)
+        return
+
+
+def view_details(path):
+    while True:
+        raw = input_int(f"Número da pasta a ser visualizada"
+                        f" ou deixe em branco para voltar: ",
+                        required=False)
+
+        if raw is None:
+            return
+
+        id_dir = raw
+        dir_name = f"CLT{id_dir:04d}"
+
+        if dir_name not in get_dirs(APP_DIR):
+            print(error(f"A pasta {dir_name} não existe."))
+            continue
+
+        details = get_details(path, dir_name)
+        if details:
+            print(details)
+            print("")
+            os.system('PAUSE')
+            return
 
 
 def edit_details():
     while True:
-        raw = input_int(f"Número da pasta a ser editada ou 'exit' para sair: ", required=True, escape=['exit'])
-        if raw == 'exit':  # SAIR
+        raw = input_int(f"Número da pasta a ser editada"
+                        f" ou deixe em branco para voltar: ",
+                        required=False)
+
+        if raw is None:
             return
-        else:
-            id_dir = raw
-            dir_name = f"CLT{id_dir:04d}"
-            if dir_name in get_dirs():
-                yaml_path = os.path.join(dir_name, 'details.yaml')
-                have_details = os.path.isfile(yaml_path)
-                if have_details:
-                    print("POSSUI DETALHES")
-                else:
-                    print("NÃO POSSUI DETALHES")
-                    yes_or_no = input_str(f"Deseja criar o arquivo 'details.yaml' (s/n)? ", required=True)
-                    if yes_or_no == 's':
-                        print("cria arquivo")
-                        with open(yaml_path, "w") as file:
-                            file.write("Delete me!")
-                    else:
-                        return
+
+        id_dir = raw
+        dir_name = f"CLT{id_dir:04d}"
+
+        if dir_name not in get_dirs(APP_DIR):
+            print(error(f"A pasta {dir_name} não existe."))
+            continue
+
+        details_name = 'details.yaml'
+        details_path = os.path.join(APP_DIR, dir_name, details_name)
+        have_details = os.path.isfile(details_path)
+        if not have_details:
+            dict_file = DETAILS_TEMPLATE
+            create_yaml(details_path, dict_file)
+            print(f"Um arquivo de detalhes foi criado em {dir_name}.")
+
+        if dir_name in get_dirs(APP_DIR):
+            call_editor(APP_DIR, dir_name)
+            return
+
+
+def create_yaml(path, data):
+    with open(file=path, mode='w', encoding='utf8') as file:
+        yaml.dump(data, file, allow_unicode=True, encoding='utf-8')
+
+
+def call_editor(path, dir_name):
+    file_name = "details.yaml"
+    fullpath = os.path.join(path, dir_name, file_name)
+    os.system(f"notepad '{fullpath}'")
 
 
 def delete_dir():
@@ -195,8 +254,9 @@ def delete_dir():
             break
 
         else:
-            print(f"Não existe pasta com esse número!")
+            print(error(f"Não existe pasta com esse número!"))
     os.system('PAUSE')
+
 
 def main():
     menu()
