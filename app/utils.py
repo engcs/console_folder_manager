@@ -17,7 +17,7 @@ def error(msg):
 
 
 def warning(msg):
-    return Fore.RED + "[Error] " + Style.RESET_ALL + msg
+    return Fore.YELLOW + "[Warning] " + Style.RESET_ALL + msg
 
 
 def input_int(text="", required=True, allowed=[], escape=[]):
@@ -94,8 +94,8 @@ def make_dir(path):
             print(f"{type(e).__name__, e.__str__()}")
 
 
-def rm_dir(path):
-    abs_path = os.path.join(os.getcwd(), path)
+def rm_dir(dir, path="/"):
+    abs_path = os.path.join(path, dir)
     shutil.rmtree(abs_path)
 
 
