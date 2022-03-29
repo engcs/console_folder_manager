@@ -138,7 +138,6 @@ def delete_dir():
 
 def main():
     menu()
-    # print(input_int("Insira um número: ", allowed=[1.5, 1.6, 1.7], escape=['exit']))
     os.system('PAUSE')
 
 

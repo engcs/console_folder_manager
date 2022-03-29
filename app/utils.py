@@ -19,11 +19,10 @@ def error(msg):
 def input_int(text="", required=True, allowed=[], escape=[]):
 
     if allowed:
-        for item in allowed:
-            try:
-                int(str(item))
-            except ValueError:
-                raise ValueError("Error! Allowed values must be integers.")
+        try:
+            allowed = [int(str(item)) for item in allowed]
+        except ValueError:
+            raise ValueError("Error! Allowed values must be integers.")
 
     while True:
         try:
@@ -46,44 +45,24 @@ def input_int(text="", required=True, allowed=[], escape=[]):
 
 
 def input_str(text="", required=True, allowed=[], escape=[]):
+
+    if allowed:
+        allowed = [str(item) for item in allowed]
+
     while True:
-        try:
-            result = input(text).strip()
-            if result == "":
-                if not required:
-                    return None
-                else:
-                    raise TypeError("Error. The field is required.")
-            if escape:
-                if result in escape:
-                    return result
-            if allowed:
-                if result not in allowed:
-                    raise ValueError("Error. The value is not allowed.")
-        except TypeError:
-            print(Fore.RED + "Error! O campo não pode ser branco. Tente novamente." + Style.RESET_ALL)
-        except ValueError:
-            print(Fore.RED + "Error! A entrada não é válida. Tente novamente." + Style.RESET_ALL)
-        else:
-            return result
-
-
-
-# def input_str_with_exit(text="", required=True):
-#     while True:
-#         try:
-#             result = input(text).strip()
-#             if result == "":
-#                 if required is False:
-#                     return None
-#                 else:
-#                     raise TypeError("Error. The field is required.")
-#             elif result == "exit":
-#                 return result
-#         except TypeError:
-#             print(Fore.RED + "Error! O campo não pode ser branco. Tente novamente." + Style.RESET_ALL)
-#         else:
-#             return result
+        raw = input(text).strip()
+        if raw == "" and required:
+            print(error("O campo é obrigatório."))
+            continue
+        if raw == "" and not required:
+            return None
+        if escape and raw in escape:
+            return raw
+        result = str(raw)
+        if allowed and result not in allowed:
+            print(error("Insira uma entrada válida."))
+            continue
+        return result
 
 
 def get_dirs(path):
