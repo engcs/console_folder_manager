@@ -16,6 +16,10 @@ def error(msg):
     return Fore.RED + "[Error] " + Style.RESET_ALL + msg
 
 
+def warning(msg):
+    return Fore.RED + "[Error] " + Style.RESET_ALL + msg
+
+
 def input_int(text="", required=True, allowed=[], escape=[]):
 
     if allowed:
@@ -65,7 +69,7 @@ def input_str(text="", required=True, allowed=[], escape=[]):
         return result
 
 
-def get_dirs(path):
+def get_dirs(path="/"):
     START = "CLT"
     clt_dir = []
     for dir in os.listdir(path):
