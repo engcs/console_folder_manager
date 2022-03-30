@@ -5,12 +5,8 @@ from utils import *
 
 APP_DIR = "app"
 DETAILS_TEMPLATE = {'nome': '', 'endereco': '', 'telefone': '', 'número': ''}
-# DETAILS_TEMPLATE = """
-# nome:
-# endereço:
-# telefone:
-# número:
-# """
+CURRENT_WORKING_PATH = os.getcwd()
+
 
 def menu():
     menu_str = """
@@ -50,7 +46,7 @@ def choice_0():
 # LISTAR DIRETÓRIOS [CLT]
 def choice_1():
     print("\n#################  LISTAR DIRETÓRIOS [CLT] #################\n")
-    list_dirs(APP_DIR)
+    list_dirs(CURRENT_WORKING_PATH)
     print("")
     os.system('PAUSE')
 
@@ -58,26 +54,26 @@ def choice_1():
 # CRIAR NOVA PASTA [CLT]
 def choice_2():
     print("\n##################  CRIAR DIRETÓRIO [CLT] ##################\n")
-    create_dir()
+    create_dir(CURRENT_WORKING_PATH)
     print("")
 
 
 # VISUALIZAR DETALHES
 def choice_3():
     print("\n###############  VISUALIZAR DETALHES [CLT]  ################\n")
-    view_details(APP_DIR)
+    view_details(CURRENT_WORKING_PATH)
 
 
 # EDITAR DETALHES
 def choice_4():
     print("\n#################  EDITAR DETALHES [CLT]  ##################\n")
-    edit_details()
+    edit_details(CURRENT_WORKING_PATH)
 
 
 # DELETAR PASTA [CLT]
 def choice_5():
     print("\n################# DELETAR DIRETÓRIO [CLT] ##################\n")
-    delete_dir()
+    delete_dir(CURRENT_WORKING_PATH)
 
 
 #############################################################################
@@ -93,8 +89,8 @@ def list_dirs(path="/"):
     return dirs
 
 
-def get_last_id_folder():
-    dirs = list_dirs(APP_DIR)
+def get_last_id_folder(path):
+    dirs = list_dirs(path)
     print("")
     if dirs:
         last_dir = dirs[-1]
@@ -105,8 +101,8 @@ def get_last_id_folder():
     return next_id_dir
 
 
-def create_dir():
-    next_id_dir = get_last_id_folder()
+def create_dir(path):
+    next_id_dir = get_last_id_folder(path)
     while True:
         raw = input_int(
             f"Número da nova pasta ou 'exit' para sair [{next_id_dir:04d}]: ",
@@ -123,9 +119,9 @@ def create_dir():
 
         new_dir_name = f"CLT{new_id_dir:04d}"
 
-        if make_dir(os.path.join(APP_DIR, new_dir_name)):
+        if make_dir(os.path.join(path, new_dir_name)):
             print(f"\nA pasta {new_dir_name} foi criada com sucesso!")
-            list_dirs(APP_DIR)
+            list_dirs(path)
             print("")
             os.system('PAUSE')
             break
@@ -160,7 +156,7 @@ def view_details(path):
         id_dir = raw
         dir_name = f"CLT{id_dir:04d}"
 
-        if dir_name not in get_dirs(APP_DIR):
+        if dir_name not in get_dirs(path):
             print(error(f"A pasta {dir_name} não existe."))
             continue
 
@@ -172,7 +168,7 @@ def view_details(path):
             return
 
 
-def edit_details():
+def edit_details(path):
     while True:
         raw = input_int(f"Número da pasta a ser editada"
                         f" ou deixe em branco para voltar: ",
@@ -184,20 +180,20 @@ def edit_details():
         id_dir = raw
         dir_name = f"CLT{id_dir:04d}"
 
-        if dir_name not in get_dirs(APP_DIR):
+        if dir_name not in get_dirs(path):
             print(error(f"A pasta {dir_name} não existe."))
             continue
 
         details_name = 'details.yaml'
-        details_path = os.path.join(APP_DIR, dir_name, details_name)
+        details_path = os.path.join(path, dir_name, details_name)
         have_details = os.path.isfile(details_path)
         if not have_details:
             dict_file = DETAILS_TEMPLATE
             create_yaml(details_path, dict_file)
             print(f"Um arquivo de detalhes foi criado em {dir_name}.")
 
-        if dir_name in get_dirs(APP_DIR):
-            call_editor(APP_DIR, dir_name)
+        if dir_name in get_dirs(path):
+            call_editor(path, dir_name)
             return
 
 
@@ -212,14 +208,14 @@ def call_editor(path, dir_name):
     os.system(f"notepad '{fullpath}'")
 
 
-def delete_dir():
+def delete_dir(path):
     yes_or_no = input_str(
         f"Deseja exibir os diretórios existentes (y/n)? ",
         allowed=['y', 'n'],
         required=True)
 
     if yes_or_no == 'y':
-        list_dirs(APP_DIR)
+        list_dirs(path)
         print("")
 
     while True:
@@ -234,7 +230,11 @@ def delete_dir():
         id_dir = raw
         dir_name = f"CLT{id_dir:04d}"
 
-        if dir_name in get_dirs(APP_DIR):
+        if not get_dirs(path):
+            print("Não há pastas neste diretório")
+            return
+
+        if dir_name in get_dirs(path):
             print(f"\nTem certeza que deseja remover a pasta {dir_name}?")
 
             raw = input_str(warning("Digite o nome completo da pasta para"
@@ -245,10 +245,15 @@ def delete_dir():
                 return
 
             if raw.upper() == dir_name.upper():
-                rm_dir(dir_name, APP_DIR)
-                print(f"\nA pasta {dir_name} foi removida com sucesso!")
-                list_dirs(APP_DIR)
-                print("")
+                try:
+                    rm_dir(dir_name, path)
+                # PermissionError: [WinError 5] Acesso negado
+                except PermissionError as e:
+                    print(e)
+                else:
+                    print(f"\nA pasta {dir_name} foi removida com sucesso!")
+                    list_dirs(path)
+                    print("")
             else:
                 print(error("O nome está incorreto! Operação cancelada."))
             break

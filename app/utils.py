@@ -96,6 +96,20 @@ def make_dir(path):
 
 def rm_dir(dir, path="/"):
     abs_path = os.path.join(path, dir)
-    shutil.rmtree(abs_path)
+    shutil.rmtree(abs_path, ignore_errors=False, onerror=remove_readonly)
 
 
+def remove_readonly(func, path, exc_info):
+    """
+    https://bugs.python.org/msg357315
+    Error handler for ``shutil.rmtree``.
+
+    If the error is due to an access error in folder (read only folder),
+    it attempts to add write permission and then retries removal.
+
+    Usage : ``shutil.rmtree(path, onerror=remove_readonly)``
+    """
+    import stat
+    "Clear the readonly bit and reattempt the removal"
+    os.chmod(path, stat.S_IWRITE)
+    func(path)
