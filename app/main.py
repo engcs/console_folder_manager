@@ -1,10 +1,9 @@
 import os
-import yaml
 
+import yaml
 from utils import *
 
-APP_DIR = "app"
-DETAILS_TEMPLATE = {'nome': '', 'endereco': '', 'telefone': '', 'número': ''}
+DETAILS_TEMPLATE = {'nome': '', 'endereco': '', 'contato': '', 'pessoa': ''}
 CURRENT_WORKING_PATH = os.getcwd()
 
 
@@ -47,8 +46,6 @@ def choice_0():
 def choice_1():
     print("\n#################  LISTAR DIRETÓRIOS [CLT] #################\n")
     list_dirs(CURRENT_WORKING_PATH)
-    print("")
-    os.system('PAUSE')
 
 
 # CRIAR NOVA PASTA [CLT]
@@ -81,27 +78,12 @@ def choice_5():
 #############################################################################
 
 def list_dirs(path="/"):
-    dirs = get_dirs(path)
+    dirs = check_if_dirs_exists(path)
     if dirs:
-        print(dirs)
-    else:
-        print(error("Não há nenhum diretório aqui!"))
-    return dirs
+        return dirs
 
 
-def get_last_id_folder(path):
-    dirs = list_dirs(path)
-    print("")
-    if dirs:
-        last_dir = dirs[-1]
-        id_last_dir = int(last_dir[-4:])
-        next_id_dir = id_last_dir + 1
-    else:
-        next_id_dir = 0
-    return next_id_dir
-
-
-def create_dir(path):
+def create_dir(path="/"):
     next_id_dir = get_last_id_folder(path)
     while True:
         raw = input_int(
@@ -127,24 +109,10 @@ def create_dir(path):
             break
 
 
-def get_details(path, dir_name):
-    try:
-        file_name = "details.yaml"
-        fullpath = os.path.join(path, dir_name, file_name)
-
-        with open(file=fullpath, encoding='utf8') as file:
-            details = yaml.load(file, Loader=yaml.FullLoader)
-            return details
-    except FileNotFoundError as e:
-        print(error(f"Não existe um arquivo 'details.yaml'"
-                    f" na pasta '{fullpath}'."))
-        return
-    except PermissionError as e:
-        print(e)
+def view_details(path="/"):
+    if not check_if_dirs_exists(path):
         return
 
-
-def view_details(path):
     while True:
         raw = input_int(f"Número da pasta a ser visualizada"
                         f" ou deixe em branco para voltar: ",
@@ -156,6 +124,10 @@ def view_details(path):
         id_dir = raw
         dir_name = f"CLT{id_dir:04d}"
 
+        if not get_dirs(path):
+            print("Não há pastas aqui")
+            return
+
         if dir_name not in get_dirs(path):
             print(error(f"A pasta {dir_name} não existe."))
             continue
@@ -163,12 +135,13 @@ def view_details(path):
         details = get_details(path, dir_name)
         if details:
             print(details)
-            print("")
-            os.system('PAUSE')
-            return
+        print("")
 
 
-def edit_details(path):
+def edit_details(path="/"):
+    if not check_if_dirs_exists(path):
+        return
+
     while True:
         raw = input_int(f"Número da pasta a ser editada"
                         f" ou deixe em branco para voltar: ",
@@ -188,27 +161,25 @@ def edit_details(path):
         details_path = os.path.join(path, dir_name, details_name)
         have_details = os.path.isfile(details_path)
         if not have_details:
-            dict_file = DETAILS_TEMPLATE
-            create_yaml(details_path, dict_file)
-            print(f"Um arquivo de detalhes foi criado em {dir_name}.")
+
+            raw = input_str("Deseja criar um arquivo de detalhes (y/n)? ",
+                            allowed=['y', 'n'])
+
+            if raw == 'y':
+                dict_file = DETAILS_TEMPLATE
+                create_yaml(details_path, dict_file)
+                print(f"Um arquivo de detalhes foi criado em {dir_name}.")
+            elif raw == 'n':
+                return
 
         if dir_name in get_dirs(path):
             call_editor(path, dir_name)
             return
 
 
-def create_yaml(path, data):
-    with open(file=path, mode='w', encoding='utf8') as file:
-        yaml.dump(data, file, allow_unicode=True, encoding='utf-8')
+def delete_dir(path="/"):
+    check_if_dirs_exists(path)
 
-
-def call_editor(path, dir_name):
-    file_name = "details.yaml"
-    fullpath = os.path.join(path, dir_name, file_name)
-    os.system(f"notepad '{fullpath}'")
-
-
-def delete_dir(path):
     yes_or_no = input_str(
         f"Deseja exibir os diretórios existentes (y/n)? ",
         allowed=['y', 'n'],
@@ -219,7 +190,7 @@ def delete_dir(path):
         print("")
 
     while True:
-        raw = input_int(f"Número da pasta a ser removida ou 'exit'"
+        raw = input_int(f"Número da pasta a ser removida ou 'exit' "
                         f"para sair: ",
                         required=True,
                         escape=['exit'])
@@ -252,7 +223,7 @@ def delete_dir(path):
                     print(e)
                 else:
                     print(f"\nA pasta {dir_name} foi removida com sucesso!")
-                    list_dirs(path)
+                    list_dirs(path) # se não houver mais pastas, não é pra dar erro
                     print("")
             else:
                 print(error("O nome está incorreto! Operação cancelada."))

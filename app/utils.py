@@ -1,6 +1,8 @@
 import os
 import shutil
+import stat
 
+import yaml
 from colorama import Back, Fore, Style, init
 from pyfiglet import Figlet
 
@@ -51,10 +53,10 @@ def input_int(text="", required=True, allowed=[], escape=[]):
 def input_str(text="", required=True, allowed=[], escape=[]):
 
     if allowed:
-        allowed = [str(item) for item in allowed]
+        allowed = [str(item).lower() for item in allowed]
 
     while True:
-        raw = input(text).strip()
+        raw = input(text).strip().lower()
         if raw == "" and required:
             print(error("O campo é obrigatório."))
             continue
@@ -67,6 +69,15 @@ def input_str(text="", required=True, allowed=[], escape=[]):
             print(error("Insira uma entrada válida."))
             continue
         return result
+
+
+def check_if_dirs_exists(path):
+    dirs = get_dirs(path)
+    if not dirs:
+        print(error("Não há nenhum diretório aqui!"))
+        print("")
+        os.system('PAUSE')
+        return
 
 
 def get_dirs(path="/"):
@@ -83,6 +94,17 @@ def get_dirs(path="/"):
         return None
 
 
+def get_last_id_folder(path):
+    dirs = get_dirs(path)
+    if dirs:
+        last_dir = dirs[-1]
+        id_last_dir = int(last_dir[-4:])
+        next_id_dir = id_last_dir + 1
+    else:
+        next_id_dir = 0
+    return next_id_dir
+
+
 def make_dir(path):
     try:
         os.mkdir(path)
@@ -93,6 +115,31 @@ def make_dir(path):
         else:
             print(f"{type(e).__name__, e.__str__()}")
 
+
+def create_yaml(path, data):
+    with open(file=path, mode='w', encoding='utf8') as file:
+        yaml.dump(data, file, allow_unicode=True, encoding='utf-8')
+
+
+def get_details(path, dir_name):
+    try:
+        file_name = "details.yaml"
+        fullpath = os.path.join(path, dir_name, file_name)
+
+        with open(file=fullpath, encoding='utf8') as file:
+            details = yaml.load(file, Loader=yaml.FullLoader)
+            return details
+    except FileNotFoundError as e:
+        print(error(f"Não existe um arquivo 'details.yaml'"
+                    f" na pasta '{dir_name}'."))
+    except PermissionError as e:
+        print(e)
+        return
+
+def call_editor(path, dir_name):
+    file_name = "details.yaml"
+    fullpath = os.path.join(path, dir_name, file_name)
+    os.system(f"notepad '{fullpath}'")
 
 def rm_dir(dir, path="/"):
     abs_path = os.path.join(path, dir)
@@ -109,7 +156,6 @@ def remove_readonly(func, path, exc_info):
 
     Usage : ``shutil.rmtree(path, onerror=remove_readonly)``
     """
-    import stat
     "Clear the readonly bit and reattempt the removal"
     os.chmod(path, stat.S_IWRITE)
     func(path)
