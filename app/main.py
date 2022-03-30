@@ -81,6 +81,8 @@ def list_dirs(path="/"):
     dirs = check_if_dirs_exists(path)
     if dirs:
         print(dirs)
+        print("")
+        os.system('PAUSE')
         return dirs
 
 
@@ -105,8 +107,6 @@ def create_dir(path="/"):
         if make_dir(os.path.join(path, new_dir_name)):
             print(f"\nA pasta {new_dir_name} foi criada com sucesso!")
             list_dirs(path)
-            print("")
-            os.system('PAUSE')
             break
 
 
@@ -231,7 +231,7 @@ def delete_dir(path="/"):
                         print("")
                     else:
                         print("\nNão há mais nenhum diretório aqui!\n")
-                    os.system('PAUSE')
+                        os.system('PAUSE')
                     return
 
             else:
