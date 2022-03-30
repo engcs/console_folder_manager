@@ -26,7 +26,7 @@ de prestação de serviços.</p>
 - [x] Formatação de mensagens com colorização :tada:
 - [x] Makefile para automação de pequenas tarefas :tada:
 - [x] Personalização do menu de contexto do Windows para rodar em qualquer pasta :tada:
-- [x] Testes unitários do utils.py :tada:
+- [x] Testes unitários do `utils.py` :tada:
 
 ### Funcionamento
 
@@ -46,7 +46,10 @@ Antes de começar, você vai precisar ter instalado em sua máquina as seguintes
 [Git](https://git-scm.com), [Python](https://www.python.org/).
 
 ## Tecnologias
-asdasd
+
+* `Python 3.9`
+* Pacotes e Módulos: `unittest, pyfiglet, PyYAML, winregistry, colorama, coverage`
+* Testes unitários no módulo `utils.py`
 
 ## Personalização do Menu de Contexto no Windows
 
