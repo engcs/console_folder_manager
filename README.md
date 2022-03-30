@@ -1,5 +1,11 @@
 # AUTOMAÇÃO DA GESTÃO DE PASTAS DE CLIENTES DE UMA PEQUENA EMPRESA
 
+<p>
+  <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Made with python" height="30">
+  <img src="http://ForTheBadge.com/images/badges/made-with-python.svg" alt="Made with python" height="30" align="right">
+  <img src="http://ForTheBadge.com/images/badges/built-with-love.svg" alt="Made with python" height="30" align="right">
+</p>
+
 ## Objetivo
 Esta aplicação destina-se a automatizar parte do processo real da gestão de pastas de clientes de uma empresa
 de prestação de serviços elétricos.
