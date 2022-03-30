@@ -1,6 +1,6 @@
 <h1 align="center">CONSOLE PARA AUTOMAÇÃO DE PASTAS DE CLIENTES</h1>
 
-<p align="center">Aplicação destinada a automatizar parte do processo real da gestão de pastas <br> de clientes para um pequeno negócio local
+<p align="center">Aplicação em console destinada a automatizar parte do processo real da gestão de <br> pastas de clientes para um pequeno negócio local
 de prestação de serviços.</p>
 
 <p align="center">
@@ -33,9 +33,9 @@ de prestação de serviços.</p>
 * É possível listas as pastas de cliente, que neste caso estavam no formato padronizado `CLT0000`.
 A criação de pastas com templates e autonumeração faz partes das features.
 
-* Também é possível visualizar detalhes do cliente por meio do carregamento de um arquivo '.yaml' dentro de cada pasta de cliente 'CLT'
+* Também é possível visualizar detalhes do cliente por meio do carregamento de um arquivo `.yaml` dentro de cada pasta de cliente `CLT`
 
-* A edição dos arquivos de detalhe '.yaml' pode ser realizada usando a opção "editar detalhes", que chama o notepad do Windows.
+* A edição dos arquivos de detalhe `.yaml` pode ser realizada usando a opção "editar detalhes", que chama o notepad do Windows.
 
 ## Rodando a Aplicação
 asdasd
@@ -45,20 +45,34 @@ asdasd
 Antes de começar, você vai precisar ter instalado em sua máquina as seguintes ferramentas:
 [Git](https://git-scm.com), [Python](https://www.python.org/).
 
+### Rodando os testes
+
+Foram realizados testes unitários para o módulo `utils.py` para garantir o funcionamento da validação das entradas.
+
+```bash
+# Para rodar os testes execute o seguinte comando dentro da pasta raiz da aplicação
+$ make cobertura
+```
+
 ## Tecnologias
 
 * `Python 3.9`
-* Pacotes e Módulos: `unittest, pyfiglet, PyYAML, winregistry, colorama, coverage`
 * Testes unitários no módulo `utils.py`
+
+### Dependências
+* `unittest` - Framework de Testes Unitários
+* `pyfiglet` - Renderizador de textos artísticos em ASCII
+* `PyYAML` - Serialização de dados em formato YAML
+* `winregistry` - Maniuplação do registro do Windows (regedit)
+* `colorama` - Habilta a produção de texto colorido no console do Windows
+* `coverage` - Ferramenta para medir a cobertura de código pelos testes
 
 ## Personalização do Menu de Contexto no Windows
 
 Também foi adicionado um script para adicionar a chamada da aplicação pricipal por meio do menu de contexto,
-clicando em uma área vazia da pasta.
+clicando em uma área vazia da pasta. Não foi testado com versões anteriores ao `Windows 10`, mas muito provavelmente é compatível.
 
-Não foi testado com versões anteriores ao Windows 10, mas muito provavelmente é compatível.
-
-Para adicionar o menu, basta rodar o Makefile dentro da pasta raiz do projeto da seguinte forma:
+Para adicionar o menu, basta rodar o `Makefile` dentro da pasta raiz do projeto da seguinte forma:
 
 ```bash
 # Para registrar a chave do menu de contexto execute o seguinte comando dentro da pasta raiz da aplicação
