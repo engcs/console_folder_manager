@@ -77,7 +77,7 @@ def check_if_dirs_exists(path):
         print(error("Não há nenhum diretório aqui!"))
         print("")
         os.system('PAUSE')
-        return
+    return dirs
 
 
 def get_dirs(path="/"):

@@ -80,6 +80,7 @@ def choice_5():
 def list_dirs(path="/"):
     dirs = check_if_dirs_exists(path)
     if dirs:
+        print(dirs)
         return dirs
 
 
@@ -178,7 +179,8 @@ def edit_details(path="/"):
 
 
 def delete_dir(path="/"):
-    check_if_dirs_exists(path)
+    if not check_if_dirs_exists(path):
+        return
 
     yes_or_no = input_str(
         f"Deseja exibir os diretórios existentes (y/n)? ",
@@ -218,13 +220,20 @@ def delete_dir(path="/"):
             if raw.upper() == dir_name.upper():
                 try:
                     rm_dir(dir_name, path)
-                # PermissionError: [WinError 5] Acesso negado
                 except PermissionError as e:
                     print(e)
                 else:
                     print(f"\nA pasta {dir_name} foi removida com sucesso!")
-                    list_dirs(path) # se não houver mais pastas, não é pra dar erro
-                    print("")
+
+                    dirs = get_dirs(path)
+                    if dirs:
+                        print(dirs)
+                        print("")
+                    else:
+                        print("\nNão há mais nenhum diretório aqui!\n")
+                    os.system('PAUSE')
+                    return
+
             else:
                 print(error("O nome está incorreto! Operação cancelada."))
             break
