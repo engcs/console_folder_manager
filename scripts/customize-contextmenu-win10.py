@@ -9,6 +9,9 @@ import winreg as reg
 # Script file name
 script_name = "main.py"
 
+# Script path
+script_path = os.path.join("app", script_name)
+
 # Get path of current working directory
 cwd = os.getcwd()
 
@@ -30,6 +33,6 @@ reg.SetValue(main_key, '', reg.REG_SZ, f'&{title_in_context_menu}')
 
 # Create the subkey (inner key)
 subkey = reg.CreateKey(main_key, r"command")
-reg.SetValue(subkey, '', reg.REG_SZ, python_with_console + f' "{cwd}\\{script_name}"')
-# reg.SetValue(subkey, '', reg.REG_SZ, python_hidden_console + f' "{cwd}\\{script_name}"')
+reg.SetValue(subkey, '', reg.REG_SZ, python_with_console + f' "{cwd}\\{script_path}"')
+# reg.SetValue(subkey, '', reg.REG_SZ, python_hidden_console + f' "{cwd}\\{script_path}"')
 
