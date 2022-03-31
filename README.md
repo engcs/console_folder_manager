@@ -37,6 +37,12 @@ A criação de pastas com templates e autonumeração faz partes das features.
 
 * A edição dos arquivos de detalhe `.yaml` pode ser realizada usando a opção "editar detalhes", que chama o notepad do Windows.
 
+<div>
+    <p>
+        <img src="https://github.com/engcs/console_folder_manager/blob/master/docs/assets/img/Anima%C3%A7%C3%A3o-Menu-Contexto.gif"> 
+    </p>
+</div>
+
 ## Rodando a Aplicação
 asdasd
 
