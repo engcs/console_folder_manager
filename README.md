@@ -39,7 +39,7 @@ A criação de pastas com templates e autonumeração faz partes das features.
 
 <div>
     <p>
-        <img src="https://github.com/engcs/console_folder_manager/blob/master/docs/assets/img/Anima%C3%A7%C3%A3o-Menu-Contexto.gif"> 
+        <img src="docs/assets/img/Anima%C3%A7%C3%A3o-Menu-Contexto.gif"> 
     </p>
 </div>
 
