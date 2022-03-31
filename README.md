@@ -82,7 +82,7 @@ clicando em uma área vazia da pasta. Não foi testado com versões anteriores a
 Para adicionar o menu, basta rodar o `Makefile` dentro da pasta raiz do projeto da seguinte forma:
 
 ```bash
-# Para registrar a chave do menu de contexto execute o seguinte comando dentro da pasta raiz da aplicação
+# Rode o comando a seguir dentro da pasta raiz da aplicação para adicionar o menu de contexto
 $ make registrar-menu
 ```
 
