@@ -111,7 +111,7 @@ def make_dir(path):
         return path
     except FileExistsError as e:
         if e.winerror == 183:
-            print(Fore.RED + f"A pasta {e.filename} já existe!" + Style.RESET_ALL)
+            print(error("A pasta {e.filename} já existe!"))
         else:
             print(f"{type(e).__name__, e.__str__()}")
 
@@ -136,10 +136,12 @@ def get_details(path, dir_name):
         print(e)
         return
 
+
 def call_editor(path, dir_name):
     file_name = "details.yaml"
     fullpath = os.path.join(path, dir_name, file_name)
     os.system(f"notepad '{fullpath}'")
+
 
 def rm_dir(dir, path="/"):
     abs_path = os.path.join(path, dir)
