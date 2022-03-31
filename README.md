@@ -45,7 +45,7 @@ A criação de pastas com templates e autonumeração faz partes das features.
 
 
 ## Rodando a Aplicação
-asdasd
+:construction_worker: :warning: Em construção:warning: :construction_worker:
 
 ### Pré-Requisitos
 
